@@ -1,6 +1,5 @@
 package com.tdev.tgallery.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -16,7 +15,7 @@ import coil.compose.AsyncImage
 import com.tdev.tgallery.data.GalleryUiState
 import com.tdev.tgallery.data.Tab
 import com.tdev.tgallery.model.MediaItem
-import com.tdev.tgallery.model.MediaType
+import com.tdev.tgallery.ui.components.MediaThumb
 import com.tdev.tgallery.ui.theme.*
 
 @Composable
@@ -27,8 +26,6 @@ fun GalleryScreen(
     onTabChange: (Tab) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-
-        // Başlık + Tab
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -43,7 +40,6 @@ fun GalleryScreen(
             }
         }
 
-        // İçerik
         when (state.tab) {
             Tab.ALL -> MediaGrid(items = state.allMedia, onMediaClick = onMediaClick)
             Tab.ALBUMS -> AlbumGrid(albums = state.albums, onAlbumClick = onAlbumClick)
@@ -78,38 +74,6 @@ private fun MediaGrid(items: List<MediaItem>, onMediaClick: (MediaItem) -> Unit)
 }
 
 @Composable
-private fun MediaThumb(item: MediaItem, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .aspectRatio(1f)
-            .clickable { onClick() }
-    ) {
-        AsyncImage(
-            model = item.uri,
-            contentDescription = item.name,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-        if (item.type == MediaType.VIDEO) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(4.dp)
-                    .background(Bg.copy(alpha = 0.6f), shape = androidx.compose.foundation.shape.RoundedCornerShape(4.dp))
-                    .padding(horizontal = 4.dp, vertical = 2.dp)
-            ) {
-                val sec = item.durationMs / 1000
-                Text(
-                    text = "%d:%02d".format(sec / 60, sec % 60),
-                    color = TextPrimary,
-                    fontSize = 11.sp
-                )
-            }
-        }
-    }
-}
-
-@Composable
 private fun AlbumGrid(
     albums: List<com.tdev.tgallery.model.Album>,
     onAlbumClick: (String) -> Unit
@@ -122,10 +86,7 @@ private fun AlbumGrid(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(albums, key = { it.name }) { album ->
-            Column(
-                modifier = Modifier
-                    .clickable { onAlbumClick(album.name) }
-            ) {
+            Column(modifier = Modifier.clickable { onAlbumClick(album.name) }) {
                 Box(modifier = Modifier.aspectRatio(1f)) {
                     AsyncImage(
                         model = album.coverUri,
