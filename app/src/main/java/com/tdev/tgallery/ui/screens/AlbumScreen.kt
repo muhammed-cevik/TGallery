@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tdev.tgallery.model.MediaItem
+import com.tdev.tgallery.ui.components.MediaThumb
 import com.tdev.tgallery.ui.theme.TextDim
 import com.tdev.tgallery.ui.theme.TextPrimary
 
@@ -35,9 +36,7 @@ fun AlbumScreen(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Geri",
                 tint = TextPrimary,
-                modifier = Modifier
-                    .size(22.dp)
-                    .clickable { onBack() }
+                modifier = Modifier.size(22.dp).clickable { onBack() }
             )
             Spacer(modifier = Modifier.width(12.dp))
             Column {
